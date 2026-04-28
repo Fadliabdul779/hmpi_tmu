@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Manajemen Anggota - Hima Informatika{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.tailwind.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Manajemen Anggota</h1>
+                <p class="text-gray-600 mt-1">Kelola data anggota Hima Informatika</p>
+            </div>
+            <a href="{{ url_for('admin.member_create') }}" class="mt-4 md:mt-0 inline-flex items-center bg-gradient-to-r from-primary-500 to-primary-600 text-white px-5 py-2.5 rounded-lg hover:shadow-lg transition transform hover:-translate-y-0.5">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+                Tambah Anggota
+            </a>
+        </div>
+    </div>
+    
+    <!-- Filters -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+        <form method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Cari Anggota</label>
+                <input type="text" name="search" value="{{ search }}" 
+                       class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                       placeholder="Nama, NIM, atau username">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Program Studi</label>
+                <select name="program" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <option value="">Semua Program Studi</option>
+                    {% for prog in programs %}
+                    <option value="{{ prog }}" {{ 'selected' if program == prog else '' }}>{{ prog }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="flex items-end space-x-2">
+                <button type="submit" class="flex-1 bg-primary-500 text-white px-4 py-2.5 rounded-lg hover:bg-primary-600 transition">
+                    Filter
+                </button>
+                <a href="{{ url_for('admin.members') }}" class="px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                    Reset
+                </a>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Members Table -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full" id="membersTable">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Anggota</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIM</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Program Studi</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Peran</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bergabung</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for member in members.items %}
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <div class="h-10 w-10 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white font-semibold">
+                                        {{ member.user.first_name[0]|upper }}{{ member.user.last_name[0]|upper }}
+                                    </div>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        {{ member.user.full_name }}
+                                    </div>
+                                    <div class="text-sm text-gray-500">{{ member.user.username }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-900">{{ member.nim }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">{{ member.study_program or '-' }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">{{ member.user.role|title }}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 inline-flex items-center text-xs font-semibold rounded-full
+                                {{ 'bg-green-100 text-green-800' if member.is_active else 'bg-red-100 text-red-800' }}">
+                                {{ 'Aktif' if member.is_active else 'Nonaktif' }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500">
+                            {{ member.created_at.strftime('%d %b %Y') }}
+                        </td>
+                        <td class="px-6 py-4 text-sm font-medium">
+                            <div class="flex space-x-2">
+                                <a href="{{ url_for('admin.member_detail', id=member.id) }}" 
+                                   class="text-primary-600 hover:text-primary-900">Detail</a>
+                                {% if current_user.role == 'superadmin' or member.user.role in ['member', 'structural'] %}
+                                <a href="{{ url_for('admin.member_edit', id=member.id) }}" 
+                                   class="text-blue-600 hover:text-blue-900">Edit</a>
+                                {% endif %}
+                                {% if member.user.role != 'superadmin' %}
+                                <form method="POST" action="{{ url_for('admin.toggle_member', id=member.id) }}" class="inline" 
+                                      onsubmit="return confirm('{{ 'Nonaktifkan' if member.is_active else 'Aktifkan' }} anggota {{ member.user.full_name }}?')">
+                                    <button type="submit" class="text-yellow-600 hover:text-yellow-900">
+                                        {{ 'Nonaktifkan' if member.is_active else 'Aktifkan' }}
+                                    </button>
+                                </form>
+                                {% else %}
+                                <button class="text-yellow-600 opacity-40 cursor-not-allowed">
+                                    Tidak Dapat Diubah
+                                </button>
+                                {% endif %}
+                                {% if member.user.role != 'superadmin' and current_user.role == 'superadmin' %}
+                                <form method="POST" action="{{ url_for('admin.delete_member', id=member.id) }}" class="inline"
+                                      onsubmit="return confirm('Hapus anggota {{ member.user.full_name }}? Tindakan ini tidak dapat dibatalkan.')">
+                                    <button type="submit" class="text-red-600 hover:text-red-900">
+                                        Hapus
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                            <td colspan="7" class="px-6 py-12 text-center text-gray-500">
+                            <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            <p>Tidak ada data anggota</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {% if members.pages > 1 %}
+        <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+            <div class="flex items-center justify-between">
+                <p class="text-sm text-gray-700">
+                    Menampilkan {{ members.items|length }} dari {{ members.total }} anggota
+                </p>
+                <div class="flex space-x-2">
+                    {% if members.has_prev %}
+                    <a href="{{ url_for('admin.members', page=members.prev_num, search=search, program=program) }}" 
+                       class="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">Sebelumnya</a>
+                    {% endif %}
+                    
+                    {% for page_num in members.iter_pages() %}
+                        {% if page_num %}
+                            {% if page_num != members.page %}
+                            <a href="{{ url_for('admin.members', page=page_num, search=search, program=program) }}" 
+                               class="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">{{ page_num }}</a>
+                            {% else %}
+                            <span class="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-primary-600 bg-primary-50">{{ page_num }}</span>
+                            {% endif %}
+                        {% else %}
+                        <span class="px-2">...</span>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if members.has_next %}
+                    <a href="{{ url_for('admin.members', page=members.next_num, search=search, program=program) }}" 
+                       class="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">Selanjutnya</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.tailwind.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    $('#membersTable').DataTable({
+        paging: false,
+        searching: false,
+        info: false,
+        order: [[5, 'desc']]
+    });
+});
+</script>
+{% endblock %}

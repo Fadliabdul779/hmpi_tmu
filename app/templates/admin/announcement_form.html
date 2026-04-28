@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Edit' if announcement else 'Buat' }} Pengumuman - Hima Informatika{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">
+            {{ 'Edit Pengumuman' if announcement else 'Buat Pengumuman Baru' }}
+        </h1>
+        <p class="text-gray-600 mt-1">
+            {{ 'Ubah pengumuman yang sudah ada' if announcement else 'Isi form berikut untuk membuat pengumuman baru' }}
+        </p>
+    </div>
+    
+    <!-- Form -->
+    <div class="bg-white rounded-xl shadow-md p-6">
+        <form method="POST" class="space-y-6">
+            
+            <!-- Basic Info -->
+            <div class="border-b border-gray-200 pb-6">
+                <h2 class="text-lg font-semibold mb-4">Informasi Pengumuman</h2>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Judul *</label>
+                        <input type="text" name="title" required value="{{ announcement.title if announcement else '' }}"
+                               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                               placeholder="Judul pengumuman atau berita">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Slug URL</label>
+                        <input type="text" name="slug" value="{{ announcement.slug if announcement else '' }}"
+                               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                               placeholder="otomatis-dari-judul">
+                        <p class="text-xs text-gray-500 mt-1">Biarkan kosong untuk diisi otomatis</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kategori *</label>
+                        <select name="category" required
+                                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option value="news" {{ 'selected' if announcement and announcement.category == 'news' else '' }}>Berita</option>
+                            <option value="announcement" {{ 'selected' if announcement and announcement.category == 'announcement' else '' }}>Pengumuman</option>
+                            <option value="article" {{ 'selected' if announcement and announcement.category == 'article' else '' }}>Artikel</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ringkasan (Excerpt)</label>
+                        <textarea name="excerpt" rows="2"
+                                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                  placeholder="Ringkasan singkat pengumuman">{{ announcement.excerpt if announcement else '' }}</textarea>
+                        <p class="text-xs text-gray-500 mt-1">Biarkan kosong untuk mengambil 500 karakter pertama</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Konten *</label>
+                        <textarea name="content" rows="10" required
+                                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                  placeholder="Tulis konten pengumuman di sini...">{{ announcement.content if announcement else '' }}</textarea>
+                        <p class="text-xs text-gray-500 mt-1">Gunakan baris baru untuk paragraf. HTML diizinkan.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings -->
+            <div class="pb-6">
+                <h2 class="text-lg font-semibold mb-4">Pengaturan</h2>
+                <div class="space-y-4">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="is_published" 
+                               {{ 'checked' if announcement and announcement.is_published and announcement.published_at else '' }}
+                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                        <span class="ml-2 text-sm text-gray-700">Publikasikan pengumuman ini</span>
+                    </label>
+                    
+                    <label class="flex items-center">
+                        <input type="checkbox" name="is_featured"
+                               {{ 'checked' if announcement and announcement.is_featured else '' }}
+                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                        <span class="ml-2 text-sm text-gray-700">Tampilkan sebagai pengumuman unggulan</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                <a href="{{ url_for('admin.announcements') }}" class="px-6 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                    Batal
+                </a>
+                <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-accent-500 to-accent-600 text-white rounded-lg hover:shadow-lg transition transform hover:-translate-y-0.5">
+                    {{ 'Update Pengumuman' if announcement else 'Buat Pengumuman' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

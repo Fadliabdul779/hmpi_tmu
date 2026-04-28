@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Login Anggota - Hima Informatika{% endblock %}
+
+{% block content %}
+<div class="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4">
+    <div class="max-w-md w-full">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h2 class="text-3xl font-heading font-bold text-gray-900">Login Anggota</h2>
+                <p class="text-gray-600 mt-2">Masuk untuk akses anggota</p>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="p-4 rounded-lg mb-4 
+                            {% if category == 'success' %}bg-green-50 text-green-700 border border-green-200
+                            {% elif category == 'danger' %}bg-red-50 text-red-700 border border-red-200
+                            {% elif category == 'warning' %}bg-yellow-50 text-yellow-700 border border-yellow-200
+                            {% else %}bg-blue-50 text-blue-700 border border-blue-200{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" action="{{ url_for('auth.member_login') }}" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                    <input type="text" id="username" name="username" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+                           placeholder="Masukkan username">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="password" name="password" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+                           placeholder="Masukkan password">
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="remember" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                        <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
+                    </label>
+                    <a href="#" class="text-sm text-primary-600 hover:text-primary-700">Lupa password?</a>
+                </div>
+                
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition transform hover:-translate-y-0.5">
+                    Masuk
+                </button>
+            </form>
+            
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <div class="text-center">
+                    <p class="text-sm text-gray-600 mb-3">- atau login sebagai -</p>
+                    <div class="flex gap-3">
+                        <a href="{{ url_for('auth.login') }}" class="flex-1 bg-purple-50 border border-purple-200 text-purple-700 py-2.5 px-4 rounded-lg hover:bg-purple-100 transition font-medium">
+                            Pengurus / Admin
+                        </a>
+                        <a href="{{ url_for('admin.structural_dashboard') }}" onclick="event.preventDefault(); alert('Silakan login terlebih dahulu');" class="flex-1 bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-2.5 px-4 rounded-lg hover:shadow-md transition font-medium">
+                            Super Admin
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Belum punya akun anggota? 
+                    <a href="{{ url_for('main.contact') }}" class="text-primary-600 hover:text-primary-700 font-semibold">Hubungi pengurus</a>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Info Cards -->
+        <div class="mt-8">
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                <div class="flex items-start">
+                    <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 flex-shrink-0 mt-0.5">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-blue-900">Akses Anggota</h3>
+                        <p class="text-sm text-blue-700">Login untuk melihat profil, riwayat pendaftaran event, dan informasi keanggotaan Anda</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

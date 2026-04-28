@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Berita & Pengumuman - Hima Informatika{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Header -->
+    <div class="mb-10">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Berita & Pengumuman</h1>
+        <p class="text-xl text-gray-600">Informasi terbaru dari Hima Informatika</p>
+    </div>
+    
+    <!-- Filters -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+        <form method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                <select name="category" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <option value="">Semua Kategori</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat }}" {{ 'selected' if category == cat else '' }}>{{ cat|capitalize }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="flex items-end">
+                <button type="submit" class="w-full bg-primary-500 text-white px-4 py-2.5 rounded-lg hover:bg-primary-600 transition">
+                    Filter Berita
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Articles Grid -->
+    {% if announcements.items %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for ann in announcements.items %}
+        <article class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition group">
+            {% if ann.image %}
+             <div class="h-56 bg-cover bg-center" style="background-image: url('{{ url_for('static', filename='uploads/' + ann.image) }}')"></div>
+            {% else %}
+            <div class="h-56 bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center overflow-hidden">
+                <svg class="w-20 h-20 text-white opacity-30 group-hover:opacity-50 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+            </div>
+            {% endif %}
+            
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="px-3 py-1 bg-primary-100 text-primary-800 text-xs font-semibold rounded-full">
+                        {{ ann.category|capitalize }}
+                    </span>
+                    {% if ann.is_featured %}
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded">Featured</span>
+                    {% endif %}
+                </div>
+                
+                <h2 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary-600 transition">
+                    <a href="#">{{ ann.title }}</a>
+                </h2>
+                
+                <p class="text-gray-600 mb-4 line-clamp-3">{{ ann.excerpt or ann.content[:150] }}</p>
+                
+                <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <span class="text-sm text-gray-500">
+                        {{ ann.published_at.strftime('%d %B %Y') if ann.published_at else ann.created_at.strftime('%d %B %Y') }}
+                    </span>
+                    <span class="text-primary-600 text-sm font-medium group-hover:underline">Baca selengkapnya</span>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if announcements.pages > 1 %}
+    <div class="mt-12 flex justify-center">
+        <div class="flex space-x-2">
+            {% if announcements.has_prev %}
+            <a href="{{ url_for('main.news_list', page=announcements.prev_num, category=category) }}" 
+               class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">Sebelumnya</a>
+            {% endif %}
+            
+            {% for page_num in announcements.iter_pages() %}
+                {% if page_num %}
+                    {% if page_num != announcements.page %}
+                    <a href="{{ url_for('main.news_list', page=page_num, category=category) }}" 
+                       class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">{{ page_num }}</a>
+                    {% else %}
+                    <span class="px-4 py-2 border border-gray-300 rounded-lg bg-primary-500 text-white">{{ page_num }}</span>
+                    {% endif %}
+                {% else %}
+                <span class="px-2">...</span>
+                {% endif %}
+            {% endfor %}
+            
+            {% if announcements.has_next %}
+            <a href="{{ url_for('main.news_list', page=announcements.next_num, category=category) }}" 
+               class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">Selanjutnya</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    
+    {% else %}
+    <div class="text-center py-16">
+        <svg class="w-24 h-24 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h10"></path></svg>
+        <h3 class="text-2xl font-bold text-gray-700 mb-2">Belum Ada Berita</h3>
+        <p class="text-gray-500">Pengumuman dan berita akan segera ditambahkan.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

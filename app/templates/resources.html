@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Resource - Hima Informatika{% endblock %}
+
+{% block extra_head %}
+<style>
+  .resource-card {
+    @apply bg-white rounded-xl p-4 sm:p-6 hover:shadow-xl transition transform hover:-translate-y-1;
+  }
+  .resource-icon {
+    @apply w-10 h-10 sm:w-12 sm:h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-3 sm:mb-4;
+  }
+  .resource-icon svg {
+    @apply w-5 h-5 sm:w-6 sm:h-6;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Resources Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Resource Pembelajaran</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Koleksi materi pembelajaran, tutorial, dan referensi untuk mengembangkan skill teknologi Anda.
+            </p>
+        </div>
+        
+        <!-- Resource Categories -->
+        <div class="mb-8 sm:mb-12">
+            <div class="flex flex-wrap justify-center gap-2 sm:gap-4">
+                <a href="#" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500/20 text-primary-600 text-sm sm:text-base rounded-full hover:bg-primary-500/30 transition">
+                    Pemrograman
+                </a>
+                <a href="#" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500/20 text-primary-600 text-sm sm:text-base rounded-full hover:bg-primary-500/30 transition">
+                    Web Development
+                </a>
+                <a href="#" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500/20 text-primary-600 text-sm sm:text-base rounded-full hover:bg-primary-500/30 transition">
+                    Data Science
+                </a>
+                <a href="#" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500/20 text-primary-600 text-sm sm:text-base rounded-full hover:bg-primary-500/30 transition">
+                    Mobile Development
+                </a>
+                <a href="#" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500/20 text-primary-600 text-sm sm:text-base rounded-full hover:bg-primary-500/30 transition">
+                    UI/UX Design
+                </a>
+                <a href="#" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500/20 text-primary-600 text-sm sm:text-base rounded-full hover:bg-primary-500/30 transition">
+                    DevOps
+                </a>
+            </div>
+        </div>
+        
+        <!-- Resources Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            <!-- Resource Card 1 -->
+            <div class="resource-card">
+                <div class="resource-icon">
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Pemrograman Dasar</h3>
+                <p class="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4 line-clamp-3">
+                    Materi dasar pemrograman menggunakan Python, Java, dan C++. Cocok untuk pemula yang ingin memahami konsep pemrograman.
+                </p>
+                <a href="#" class="text-primary-600 hover:text-primary-700 font-medium flex items-center text-sm sm:text-base">
+                    Akses Materi
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </div>
+            
+            <!-- Resource Card 2 -->
+            <div class="resource-card">
+                <div class="resource-icon">
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Frontend Development</h3>
+                <p class="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4 line-clamp-3">
+                    Belajar HTML, CSS, dan JavaScript modernos. Termasuk framework seperti React, Vue, dan Angular.
+                </p>
+                <a href="#" class="text-primary-600 hover:text-primary-700 font-medium flex items-center text-sm sm:text-base">
+                    Akses Materi
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </div>
+            
+            <!-- Resource Card 3 -->
+            <div class="resource-card">
+                <div class="resource-icon">
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Backend Development</h3>
+                <p class="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4 line-clamp-3">
+                    Pelajari pembangunan server dengan Node.js, Express, Django, dan Flask. Termasuk database dan API.
+                </p>
+                <a href="#" class="text-primary-600 hover:text-primary-700 font-medium flex items-center text-sm sm:text-base">
+                    Akses Materi
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </div>
+            
+            <!-- Resource Card 4 -->
+            <div class="resource-card">
+                <div class="resource-icon">
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 8V7c0-2.76-4-5-9-5s-9 2.24-9 5v1"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l9 9"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">Database Management</h3>
+                <p class="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4 line-clamp-3">
+                    Memahami konsep database relasional dan non-relasional. Termasuk MySQL, PostgreSQL, MongoDB, dan Redis.
+                </p>
+                <a href="#" class="text-primary-600 hover:text-primary-700 font-medium flex items-center text-sm sm:text-base">
+                    Akses Materi
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </div>
+            
+            <!-- Resource Card 5 -->
+            <div class="resource-card">
+                <div class="resource-icon">
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c4 0 6 2 6 6v3a2 2 0 01-2 2h-3v4H6v-4H3a2 2 0 01-2-2V11c0-4 2-6 6-6z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">UI/UX Design</h3>
+                <p class="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4 line-clamp-3">
+                    Prinsip desain antarmuka dan pengalaman pengguna. Termasuk wireframing, prototyping, dan testing.
+                </p>
+                <a href="#" class="text-primary-600 hover:text-primary-700 font-medium flex items-center text-sm sm:text-base">
+                    Akses Materi
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </div>
+            
+            <!-- Resource Card 6 -->
+            <div class="resource-card">
+                <div class="resource-icon">
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7 20l10-11a2 2 0 00-.5-1.5L11.5 7H2v2h3.5L7 20z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">DevOps & Cloud</h3>
+                <p class="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4 line-clamp-3">
+                    Belajar tentang CI/CD, containerisasi dengan Docker, orchestration dengan Kubernetes, dan layanan cloud.
+                </p>
+                <a href="#" class="text-primary-600 hover:text-primary-700 font-medium flex items-center text-sm sm:text-base">
+                    Akses Materi
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Call to Action -->
+        <div class="mt-12 sm:mt-16 text-center">
+            <a href="#" class="inline-flex items-center px-6 py-3 sm:px-8 sm:py-4 bg-primary-500 text-white rounded-xl font-semibold hover:bg-primary-600 transition transform hover:-translate-y-1 shadow-lg text-sm sm:text-base">
+                Bantukan Koleksi Resource
+                <svg class="w-5 h-5 sm:w-6 sm:h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

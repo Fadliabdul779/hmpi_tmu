@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Edit' if event else 'Buat' }} Event - Hima Informatika{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">
+            {{ 'Edit Event' if event else 'Buat Event Baru' }}
+        </h1>
+        <p class="text-gray-600 mt-1">
+            {{ 'Ubah detail event yang sudah ada' if event else 'Isi form berikut untuk membuat event baru' }}
+        </p>
+    </div>
+    
+    <!-- Form -->
+    <div class="bg-white rounded-xl shadow-md p-6">
+        <form method="POST" class="space-y-6">
+            
+            <!-- Basic Info -->
+            <div class="border-b border-gray-200 pb-6">
+                <h2 class="text-lg font-semibold mb-4">Informasi Dasar</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Judul Event *</label>
+                        <input type="text" name="title" required value="{{ event.title if event else '' }}"
+                               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                               placeholder="Contoh: Workshop Python untuk Pemula">
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Slug URL</label>
+                        <input type="text" name="slug" value="{{ event.slug if event else '' }}"
+                               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                               placeholder="otomatis-dari-judul">
+                        <p class="text-xs text-gray-500 mt-1">Biarkan kosong untuk mengisi otomatis</p>
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Singkat</label>
+                        <textarea name="short_description" rows="2"
+                                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                  placeholder="Ringkasan singkat event (max 500 character)">{{ event.short_description if event else '' }}</textarea>
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Lengkap *</label>
+                        <textarea name="description" rows="6" required
+                                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                  placeholder="Detail event, materi, pembicara, dll">{{ event.description if event else '' }}</textarea>
+                        <p class="text-xs text-gray-500 mt-1">Gunakan format teks biasa atau HTML</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Event Details -->
+            <div class="border-b border-gray-200 pb-6">
+                <h2 class="text-lg font-semibold mb-4">Detail Event</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kategori *</label>
+                        <select name="category" required
+                                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                            <option value="">Pilih Kategori</option>
+                            <option value="workshop" {{ 'selected' if event and event.category == 'workshop' else '' }}>Workshop</option>
+                            <option value="seminar" {{ 'selected' if event and event.category == 'seminar' else '' }}>Seminar</option>
+                            <option value="hackathon" {{ 'selected' if event and event.category == 'hackathon' else '' }}>Hackathon</option>
+                            <option value="talkshow" {{ 'selected' if event and event.category == 'talkshow' else '' }}>Talk Show</option>
+                            <option value="project" {{ 'selected' if event and event.category == 'project' else '' }}>Project</option>
+                            <option value="other" {{ 'selected' if event and event.category == 'other' else '' }}>Lainnya</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal & Waktu *</label>
+                        <input type="datetime-local" name="start_date" required
+                               value="{{ event.start_date.strftime('%Y-%m-%dT%H:%M') if event and event.start_date else '' }}"
+                               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Selesai</label>
+                        <input type="datetime-local" name="end_date"
+                               value="{{ event.end_date.strftime('%Y-%m-%dT%H:%M') if event and event.end_date else '' }}"
+                               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Batas Pendaftaran</label>
+                        <input type="datetime-local" name="registration_deadline"
+                               value="{{ event.registration_deadline.strftime('%Y-%m-%dT%H:%M') if event and event.registration_deadline else '' }}"
+                               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Lokasi</label>
+                        <input type="text" name="location" value="{{ event.location if event else '' }}"
+                               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                               placeholder="Contoh: Gedung A, Lantai 2">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Link Online (jika ada)</label>
+                        <input type="url" name="online_link" value="{{ event.online_link if event else '' }}"
+                               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                               placeholder="https://zoom.us/j/...">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kapasitas Maximal</label>
+                        <input type="number" name="max_participants" min="1"
+                               value="{{ event.max_participants if event else '' }}"
+                               class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                               placeholder="Biarkan kosong jika tidak terbatas">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings -->
+            <div class="pb-6">
+                <h2 class="text-lg font-semibold mb-4">Pengaturan</h2>
+                <div class="space-y-4">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="is_published" 
+                               {{ 'checked' if event and event.is_published else '' }}
+                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                        <span class="ml-2 text-sm text-gray-700">Publikasikan event ini (akan terlihat di website)</span>
+                    </label>
+                    
+                    <label class="flex items-center">
+                        <input type="checkbox" name="is_featured"
+                               {{ 'checked' if event and event.is_featured else '' }}
+                               class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                        <span class="ml-2 text-sm text-gray-700">Tampilkan sebagai event unggulan di homepage</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                <a href="{{ url_for('admin.events') }}" class="px-6 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                    Batal
+                </a>
+                <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:shadow-lg transition transform hover:-translate-y-0.5">
+                    {{ 'Update Event' if event else 'Buat Event' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

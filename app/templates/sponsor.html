@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Sponsor & Mitra - Hima Informatika{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Header -->
+    <div class="mb-8 sm:mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">Sponsor & Mitra</h1>
+        <p class="text-base sm:text-xl text-gray-600">Kemitraan strategis yang mendukung kegiatan dan program Hima Informatika</p>
+    </div>
+    
+    <!-- Sponsor Stats -->
+    <div class="mb-10 sm:mb-12">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 text-center bg-white rounded-xl p-6 sm:p-8 shadow-md">
+            <div>
+                <div class="text-2xl sm:text-3xl font-bold text-primary-600">{{ sponsor_count }}</div>
+                <div class="text-gray-600 text-xs sm:text-sm">Sponsor Aktif</div>
+            </div>
+            <div>
+                <div class="text-2xl sm:text-3xl font-bold text-secondary-600">{{ partner_count }}</div>
+                <div class="text-gray-600 text-xs sm:text-sm">Mitra Kerja Sama</div>
+            </div>
+            <div>
+                <div class="text-2xl sm:text-3xl font-bold text-accent-600">{{ total_support }}</div>
+                <div class="text-gray-600 text-xs sm:text-sm">Nilai Dukungan</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sponsor Categories -->
+    <div class="mb-10 sm:mb-12">
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Kategori Sponsor</h2>
+        <div class="flex flex-wrap gap-2 sm:gap-4 mb-4 sm:mb-6">
+            <a href="{{ url_for('main.sponsor') }}" class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500 text-white text-sm sm:text-base rounded-lg hover:bg-primary-600 transition">
+                Semua Sponsor
+            </a>
+            {% for category in sponsor_categories %}
+            <a href="{{ url_for('main.sponsor', category=category) }}" 
+               class="px-3 py-1.5 sm:px-4 sm:py-2 border border-gray-300 text-sm sm:text-base rounded-lg hover:bg-primary-50 hover:text-primary-600 transition">
+                {{ category|capitalize }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Sponsor Grid -->
+    {% if sponsors.items %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+        {% for sponsor in sponsors.items %}
+        <div class="bg-white rounded-xl shadow-md p-4 sm:p-6 hover:shadow-lg transition border border-gray-200 hover:border-primary-300">
+            <div class="flex items-center justify-center h-40 sm:h-48">
+                {% if sponsor.logo_url %}
+                <img src="{{ sponsor.logo_url }}" alt="{{ sponsor.name }}" class="h-full max-w-full object-contain opacity-80 hover:opacity-100 transition" style="max-height: 100%; width: auto;">
+                {% else %}
+                <div class="w-full h-full flex items-center justify-center bg-gray-50 rounded-lg">
+                    <span class="text-gray-400 text-lg sm:text-xl">{{ sponsor.name[0] }}</span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="mt-3 sm:mt-4 text-center">
+                <h3 class="text-base sm:text-lg font-bold text-gray-900 mb-1 sm:mb-2 line-clamp-1">{{ sponsor.name }}</h3>
+                <p class="text-gray-600 text-xs sm:text-sm line-clamp-2">{{ sponsor.description or 'Mitra kerja sama Hima Informatika' }}</p>
+                {% if sponsor.website %}
+                <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer"
+                   class="inline-block mt-2 sm:mt-3 px-2 sm:px-3 py-1 bg-primary-100 text-primary-800 text-xs rounded-full hover:bg-primary-200 transition">
+                    Website
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if sponsors.pages > 1 %}
+    <div class="mt-10 sm:mt-12 flex justify-center">
+        <div class="flex flex-wrap space-x-1 sm:space-x-2 justify-center">
+            {% if sponsors.has_prev %}
+            <a href="{{ url_for('main.sponsor', page=sponsors.prev_num, category=category) }}"
+               class="px-3 py-2 sm:px-4 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition">Sebelumnya</a>
+            {% endif %}
+
+            {% for page_num in sponsors.iter_pages() %}
+                {% if page_num %}
+                    {% if page_num != sponsors.page %}
+                    <a href="{{ url_for('main.sponsor', page=page_num, category=category) }}"
+                       class="px-3 py-2 sm:px-4 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition">{{ page_num }}</a>
+                    {% else %}
+                    <span class="px-3 py-2 sm:px-4 text-sm border border-gray-300 rounded-lg bg-primary-500 text-white">{{ page_num }}</span>
+                    {% endif %}
+                {% else %}
+                <span class="px-2">...</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if sponsors.has_next %}
+            <a href="{{ url_for('main.sponsor', page=sponsors.next_num, category=category) }}"
+               class="px-3 py-2 sm:px-4 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition">Selanjutnya</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="text-center py-10 sm:py-16">
+        <svg class="w-16 h-16 sm:w-24 sm:h-24 mx-auto mb-3 sm:mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-2.21 0-4 1.79-4 4v2c0 3.31 2.69 6 6 6s6-2.69 6-6v-2c0-2.21-1.79-4-4-4zm0 6c-1.11 0-2-.89-2-2s.89-2 2-2 2 .89 2 2-.89 2-2 2z"/></svg>
+        <h3 class="text-xl sm:text-2xl font-bold text-gray-700 mb-2">Belum Ada Sponsor</h3>
+        <p class="text-gray-500 text-sm sm:text-base">Sponsor akan segera ditambahkan. Hubungi kami untuk kerjasama!</p>
+        <a href="{{ url_for('main.contact') }}" class="mt-4 inline-flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition text-sm sm:text-base">
+            Hubungi Kami
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

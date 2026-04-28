@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Hima Informatika{% endblock %}
+
+{% block content %}
+<div class="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4">
+    <div class="max-w-md w-full">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <div class="text-center mb-8">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Hima Informatika Logo" class="w-16 h-16 rounded-2xl mx-auto mb-4">
+                <h2 class="text-3xl font-heading font-bold">Selamat Datang</h2>
+                <p class="text-gray-600 mt-2">Masuk ke dashboard Hima Informatika</p>
+            </div>
+            
+            <form method="POST" action="{{ url_for('auth.login') }}" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                    <input type="text" id="username" name="username" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+                           placeholder="Masukkan username">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="password" name="password" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+                           placeholder="Masukkan password">
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="remember" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                        <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
+                    </label>
+                    <a href="#" class="text-sm text-primary-600 hover:text-primary-700">Lupa password?</a>
+                </div>
+                
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition transform hover:-translate-y-0.5">
+                    Masuk
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Belum punya akun? 
+                    <a href="{{ url_for('main.contact') }}" class="text-primary-600 hover:text-primary-700 font-semibold">Hubungi admin</a>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Login info cards -->
+        <div class="mt-8 grid grid-cols-1 gap-4">
+            <!-- Structural Login -->
+            <a href="{{ url_for('auth.member_login') }}" class="bg-blue-50 border border-blue-200 rounded-lg p-4 hover:shadow-md transition">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-blue-900">Akses: Anggota (Member)</h3>
+                        <p class="text-sm text-blue-700">Akses terbatas untuk melihat informasi publik</p>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Admin Login -->
+            <a href="{{ url_for('admin.structural_dashboard') }}" class="bg-purple-50 border border-purple-200 rounded-lg p-4 hover:shadow-md transition">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-purple-900">Login Pengurus (Structural)</h3>
+                        <p class="text-sm text-purple-700">Untuk pengurus dan staf hima</p>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Super Admin Login -->
+            <a href="{{ url_for('admin.dashboard') }}" class="bg-gradient-to-r from-primary-500 to-secondary-500 border border-primary-500 rounded-lg p-4 hover:shadow-md transition">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-white">Akses: Super Admin</h3>
+                        <p class="text-sm text-blue-100">Akses penuh tanpa batas untuk semua fitur sistem</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

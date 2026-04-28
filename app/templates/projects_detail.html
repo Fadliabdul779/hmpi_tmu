@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.name }} - Proyek Hima Informatika{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Breadcrumb -->
+    <nav class="mb-6 text-sm text-gray-500">
+        <a href="{{ url_for('main.index') }}" class="hover:text-primary-600">Beranda</a>
+        <span class="mx-2">→</span>
+        <a href="{{ url_for('main.projects_list') }}" class="hover:text-primary-600">Proyek</a>
+        <span class="mx-2">→</span>
+        <span class="text-gray-900">{{ project.name }}</span>
+    </nav>
+
+    <!-- Project Header -->
+    <div class="bg-white rounded-2xl shadow-md overflow-hidden mb-8">
+        {% if project.image %}
+         <div class="h-80 md:h-96 bg-cover bg-center" style="background-image: url('{{ url_for('static', filename='uploads/' + project.image) }}')"></div>
+        {% else %}
+        <div class="h-80 md:h-96 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+            <svg class="w-32 h-32 text-white opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+        </div>
+        {% endif %}
+        
+        <div class="px-6 py-8 md:px-8 md:py-10">
+            <div class="flex flex-wrap items-center gap-4 mb-4">
+                <span class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-semibold">
+                    {{ project.category|capitalize }}
+                </span>
+                {% if project.is_featured %}
+                <span class="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full text-sm font-semibold">
+                    Featured
+                </span>
+                {% endif %}
+                <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
+                    {{ project.team_members|length }} Anggota Tim
+                </span>
+            </div>
+            
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{{ project.name }}</h1>
+            
+            {% if project.short_description %}
+            <p class="text-xl text-gray-700 leading-relaxed mb-6">{{ project.short_description }}</p>
+            {% endif %}
+            
+            <div class="flex flex-wrap items-center gap-4">
+                {% if project.github_url %}
+                <a href="{{ project.github_url }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    GitHub Repository
+                </a>
+                {% endif %}
+                {% if project.demo_url %}
+                <a href="{{ project.demo_url }}" target="_blank" class="inline-flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    Live Demo
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Details -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Description -->
+            <div class="bg-white rounded-2xl shadow-md p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Deskripsi Proyek</h2>
+                <div class="prose prose-lg max-w-none">
+                    <p class="text-gray-600 leading-relaxed whitespace-pre-line">{{ project.description or 'Tidak ada deskripsi tersedia.' }}</p>
+                </div>
+            </div>
+            
+            <!-- Technologies -->
+            {% if project.technologies %}
+            <div class="bg-white rounded-2xl shadow-md p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Teknologi yang Digunakan</h2>
+                <div class="flex flex-wrap gap-3">
+                    {% set techs = project.technologies.split(',') %}
+                    {% for tech in techs %}
+                    <span class="px-4 py-2 bg-black/5 text-gray-700 rounded-lg font-medium">{{ tech.strip() }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+            <!-- Team Info -->
+            <div class="bg-white rounded-2xl shadow-md p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Tim Pengembang</h3>
+                
+                <!-- Team Leader -->
+                <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center text-white font-semibold">
+                            {{ project.team_leader.user.first_name[0]|upper }}{{ project.team_leader.user.last_name[0]|upper }}
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">{{ project.team_leader.user.full_name }}</p>
+                            <p class="text-xs text-gray-500">{{ project.team_leader.nim }}</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded">Leader</span>
+                </div>
+                
+                <!-- Other Team Members -->
+                {% for pm in project.team_members %}
+                {% if pm.member_id != project.team_leader_id %}
+                <div class="flex items-center justify-between py-3 {% if not loop.last %}border-b border-gray-100{% endif %}">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 font-semibold">
+                            {{ pm.member.user.first_name[0]|upper }}{{ pm.member.user.last_name[0]|upper }}
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">{{ pm.member.user.full_name }}</p>
+                            <p class="text-xs text-gray-500">{{ pm.member.nim }}</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded">{{ pm.role|capitalize }}</span>
+                </div>
+                {% endif %}
+                {% else %}
+                {% if project.team_members|length <= 1 %}
+                <p class="text-sm text-gray-500 text-center py-4">Tidak ada anggota tim lainnya</p>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Project Status -->
+            <div class="bg-white rounded-2xl shadow-md p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Status Proyek</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Dipublikasikan</span>
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full {{ 'bg-green-100 text-green-800' if project.is_published else 'bg-gray-100 text-gray-600' }}">
+                            {{ 'Ya' if project.is_published else 'Tidak' }}
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Ditampilkan di Utama</span>
+                        <span class="px-3 py-1 text-xs font-semibold rounded-full {{ 'bg-yellow-100 text-yellow-800' if project.is_featured else 'bg-gray-100 text-gray-600' }}">
+                            {{ 'Ya' if project.is_featured else 'Tidak' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            {% if current_user.is_authenticated %}
+            <div class="bg-white rounded-2xl shadow-md p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Aksi Cepat</h3>
+                <div class="space-y-2">
+                    <a href="#" class="w-full flex items-center justify-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+                        Daftar Partisipasi
+                    </a>
+                    <button class="w-full flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Bagikan Proyek
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Related Projects -->
+    {% if related_projects %}
+    <div class="mt-12">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Proyek Terkait</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for p in related_projects %}
+            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+                <div class="h-48 bg-gradient-to-br from-blue-400 to-purple-600 relative overflow-hidden">
+                    {% if p.image %}
+                    <img src="{{ url_for('static', filename='uploads/' + p.image) }}" alt="{{ p.name }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                    {% else %}
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <svg class="w-12 h-12 text-white opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-1">{{ p.name }}</h3>
+                    <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ p.short_description or p.description[:100] }}</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        {% if p.technologies %}
+                            {% set techs = p.technologies.split(',') %}
+                            {% for tech in techs[:2] %}
+                            <span class="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded">{{ tech.strip() }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <a href="{{ url_for('main.projects_detail', slug=p.slug) }}" class="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center">
+                        Lihat detail
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

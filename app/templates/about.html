@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Tentang Kami - Hima Informatika{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Hero -->
+    <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Tentang Hima Informatika</h1>
+        {% set hero_block = content_blocks.get('about.hero.subtitle') %}
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            {{ hero_block.content if hero_block else 'Himpunan Mahasiswa Informatika (HIMA) adalah organisasi resmi mahasiswa jurusan/Program Studi Informatika yang berfungsi sebagai wadah untuk mengembangkan potensi akademik, teknologi, dan karakter mahasiswa.' }}
+        </p>
+    </div>
+
+    <!-- Mission & Vision -->
+    <div class="grid md:grid-cols-2 gap-8 mb-16">
+        <!-- Vision -->
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center mb-6">
+                <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            {% set vision_title = content_blocks.get('about.vision.title') %}
+            {% set vision_content = content_blocks.get('about.vision.content') %}
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ vision_title.content if vision_title else 'Visi' }}</h2>
+            <p class="text-gray-600 leading-relaxed">
+                {{ vision_content.content if vision_content else 'Menjadi organisasi mahasiswa yang unggul, inovatif, dan Berjiwa teknologi serta berperan aktif dalam pengembangan ilmiah dan karakter mahasiswa Informatika.' }}
+            </p>
+        </div>
+
+        <!-- Mission -->
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="w-16 h-16 bg-secondary-100 rounded-2xl flex items-center justify-center mb-6">
+                <svg class="w-8 h-8 text-secondary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            {% set mission_title = content_blocks.get('about.mission.title') %}
+            {% set mission_items_block = content_blocks.get('about.mission.items') %}
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ mission_title.content if mission_title else 'Misi' }}</h2>
+            <ul class="space-y-3 text-gray-600">
+                {% if mission_items_block and mission_items_block.content %}
+                    {% for item in mission_items_block.content.split('\n') if item.strip() %}
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-secondary-500 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg>
+                        {{ item.strip() }}
+                    </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-secondary-500 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg>
+                        Mengembangkan potensi teknologi dan inovasi mahasiswa
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-secondary-500 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg>
+                        Menciptakan lingkungan belajar yang kolaboratif dan kreatif
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-secondary-500 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg>
+                        Mengadakan kegiatan akademik dan teknologi yang bermanfaat
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-secondary-500 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg>
+                        Membangun jejaring dengan industri dan organisasi profesional
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="bg-gradient-to-r from-primary-600 to-purple-600 rounded-2xl p-8 mb-16 text-white">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+                <div class="text-4xl font-bold mb-2">{{ total_members }}+</div>
+                <div class="text-primary-100">Anggota Aktif</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold mb-2">50+</div>
+                <div class="text-primary-100">Event/Tahun</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold mb-2">20+</div>
+                <div class="text-primary-100">Proyek Selesai</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold mb-2">10+</div>
+                <div class="text-primary-100">Kemitraan</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Programs -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Program Kerja</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Workshop -->
+            <div class="text-center">
+                <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                </div>
+                {% set ws_title = content_blocks.get('about.programs.workshop.title') %}
+                {% set ws_desc = content_blocks.get('about.programs.workshop.description') %}
+                <h3 class="text-xl font-bold mb-2">{{ ws_title.content if ws_title else 'Workshop Teknologi' }}</h3>
+                <p class="text-gray-600">{{ ws_desc.content if ws_desc else 'Kelas praktis mingguan untuk meningkatkan kemampuan teknis mahasiswa dalam berbagai bidang teknologi.' }}</p>
+            </div>
+
+            <!-- Seminar -->
+            <div class="text-center">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                {% set sem_title = content_blocks.get('about.programs.seminar.title') %}
+                {% set sem_desc = content_blocks.get('about.programs.seminar.description') %}
+                <h3 class="text-xl font-bold mb-2">{{ sem_title.content if sem_title else 'Seminar & Talkshow' }}</h3>
+                <p class="text-gray-600">{{ sem_desc.content if sem_desc else 'Sesi dengan praktisi industri dan pakar untuk update pengetahuan teknologi terkini.' }}</p>
+            </div>
+
+            <!-- Hackathon -->
+            <div class="text-center">
+                <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                {% set hack_title = content_blocks.get('about.programs.hackathon.title') %}
+                {% set hack_desc = content_blocks.get('about.programs.hackathon.description') %}
+                <h3 class="text-xl font-bold mb-2">{{ hack_title.content if hack_title else 'Hackathon & Kompetisi' }}</h3>
+                <p class="text-gray-600">{{ hack_desc.content if hack_desc else 'Ajang kompetisi untuk menguji kemampuan dalam menyelesaikan masalah dengan teknologi.' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Projects -->
+    {% if recent_projects %}
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Proyek Terbaru</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+            {% for project in recent_projects %}
+            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+                {% if project.image %}
+                 <div class="h-40 bg-cover bg-center" style="background-image: url('{{ url_for('static', filename='uploads/' + project.image) }}')"></div>
+                {% else %}
+                <div class="h-40 bg-gradient-to-br from-purple-500 to-indigo-600"></div>
+                {% endif %}
+                <div class="p-6">
+                    <h3 class="text-lg font-bold mb-2">{{ project.name }}</h3>
+                    <p class="text-sm text-gray-600 line-clamp-2">{{ project.short_description }}</p>
+                    <a href="{{ url_for('main.projects_list') }}" class="text-primary-600 hover:text-primary-700 font-medium mt-3 inline-block text-sm">
+                        Lihat detail →
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Contact CTA -->
+    <div class="bg-gray-50 rounded-2xl p-10 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Ingin Terlibat?</h2>
+        <p class="text-gray-600 mb-6 max-w-2xl mx-auto">
+            Bergabunglah dengan Hima Informatika dan jadilah bagian dari komunitas teknologi terbesar di kampus.
+            Kami selalu membuka pour transmigrasi baru setiap semester.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ url_for('main.contact') }}" class="inline-flex items-center justify-center px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition">
+                Hubungi Kami
+            </a>
+            <a href="{{ url_for('main.events_list') }}" class="inline-flex items-center justify-center px-6 py-3 border-2 border-primary-500 text-primary-500 rounded-lg hover:bg-primary-50 transition">
+                Lihat Event
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

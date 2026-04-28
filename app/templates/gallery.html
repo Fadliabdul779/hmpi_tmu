@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Galeri Foto - Hima Informatika{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Header -->
+    <div class="mb-6 sm:mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">Galeri Foto</h1>
+        <p class="text-base sm:text-xl text-gray-600">Kumpulan foto kegiatan, event, dan momen-momen berharga Hima Informatika</p>
+    </div>
+    
+    <!-- Filter -->
+    <div class="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-6 sm:mb-8">
+        <form method="GET" class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1 sm:mb-0">Kategori:</label>
+            <select name="category" class="flex-1 sm:flex-none w-full sm:w-auto px-3 sm:px-4 py-2 sm:py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm sm:text-base">
+                <option value="">Semua Kategori</option>
+                <option value="event" {{ 'selected' if category == 'event' else '' }}">Event</option>
+                <option value="workshop" {{ 'selected' if category == 'workshop' else '' }}">Workshop</option>
+                <option value="seminar" {{ 'selected' if category == 'seminar' else '' }}">Seminar</option>
+                <option value="community_service" {{ 'selected' if category == 'community_service' else '' }}">Pengabdian Masyarakat</option>
+                <option value="social" {{ 'selected' if category == 'social' else '' }}">Kegiatan Sosial</option>
+                <option value="other" {{ 'selected' if category == 'other' else '' }}">Lainnya</option>
+            </select>
+            <div class="flex gap-2">
+                <button type="submit" class="flex-1 sm:flex-none bg-primary-500 text-white px-4 py-2 sm:py-2.5 rounded-lg hover:bg-primary-600 transition text-sm sm:text-base">
+                    Filter
+                </button>
+                <a href="{{ url_for('main.gallery') }}" class="flex-1 sm:flex-none text-center px-3 py-2 text-gray-600 hover:text-primary-600 transition text-sm sm:text-base underline">Reset</a>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Gallery Grid -->
+    {% if gallery_items.items %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 xl:gap-6">
+        {% for item in gallery_items.items %}
+        <div class="gallery-card group">
+            <div class="gallery-image-wrapper">
+                {% if item.image_url %}
+                <img src="{{ item.image_url }}" alt="{{ item.title or 'Gallery Item' }}" class="gallery-image">
+                {% else %}
+                <div class="gallery-image-placeholder">
+                    <svg class="w-12 h-12 text-white opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 12m-8 4l1.586-1.586a2 2 0 012.828 0L12 12m-8 4l1.586-1.586a2 2 0 012.828 0L8 12m8 8l1.586-1.586a2 2 0 012.828 0L16 20m-8-4v2.586a1 1 0 001.414.586l4.586-4.586a1 1 0 00-.586-1.414V8a2 2 0 012-2h3"></path></svg>
+                </div>
+                {% endif %}
+                {% if item.is_featured %}
+                <div class="absolute top-3 right-3 bg-yellow-400 text-yellow-900 rounded-full text-xs font-bold px-2 py-1">Featured</div>
+                {% endif %}
+            </div>
+            <div class="p-4">
+                {% if item.title %}
+                <h3 class="text-base sm:text-lg font-bold text-gray-900 mb-1 sm:mb-2 line-clamp-2">{{ item.title }}</h3>
+                {% endif %}
+                {% if item.description %}
+                <p class="text-gray-600 text-sm sm:text-sm line-clamp-2 sm:line-clamp-3 mb-3">{{ item.description }}</p>
+                {% endif %}
+                <div class="flex items-center text-xs sm:text-sm text-gray-500">
+                    <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span>{{ item.created_at.strftime('%d %b %Y') if item.created_at else '' }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if gallery_items.pages > 1 %}
+    <div class="mt-8 sm:mt-12 flex justify-center">
+        <div class="flex flex-wrap space-x-1 sm:space-x-2 justify-center gap-2">
+            {% if gallery_items.has_prev %}
+            <a href="{{ url_for('main.gallery', page=gallery_items.prev_num, category=category) }}" 
+               class="px-3 py-2 sm:px-4 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition">Sebelumnya</a>
+            {% endif %}
+            
+            {% for page_num in gallery_items.iter_pages() %}
+                {% if page_num %}
+                    {% if page_num != gallery_items.page %}
+                    <a href="{{ url_for('main.gallery', page=page_num, category=category) }}" 
+                       class="px-3 py-2 sm:px-4 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition">{{ page_num }}</a>
+                    {% else %}
+                    <span class="px-3 py-2 sm:px-4 text-sm border border-gray-300 rounded-lg bg-primary-500 text-white">{{ page_num }}</span>
+                    {% endif %}
+                {% else %}
+                <span class="px-2">...</span>
+                {% endif %}
+            {% endfor %}
+            
+            {% if gallery_items.has_next %}
+            <a href="{{ url_for('main.gallery', page=gallery_items.next_num, category=category) }}" 
+               class="px-3 py-2 sm:px-4 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition">Selanjutnya</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
